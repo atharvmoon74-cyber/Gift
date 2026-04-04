@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Sweetheart ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* GLOBAL */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+  background:linear-gradient(270deg,#ff6ec4,#7873f5,#42e695);
+  background-size:600% 600%;
+  animation:bgMove 12s ease infinite;
+  color:white;
+  text-align:center;
+}
+
+/* BACKGROUND ANIMATION */
+@keyframes bgMove{
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
+}
+
+/* GLASS */
+.glass{
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.1);
+  border-radius:25px;
+  padding:30px;
+  margin:40px auto;
+  width:85%;
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* GLOW */
+.glow{
+  font-size:2.5rem;
+  text-shadow:0 0 15px white,0 0 30px pink;
+}
+
+/* FADE */
+.fade{
+  opacity:0;
+  transform:translateY(40px);
+  animation:fadeUp 1.2s forwards;
+}
+
+@keyframes fadeUp{
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* TYPING */
+.typing{
+  margin-top:15px;
+  font-size:1.2rem;
+  border-right:2px solid white;
+  width:0;
+  overflow:hidden;
+  white-space:nowrap;
+  animation:typing 4s steps(40,end) forwards, blink .7s infinite;
+}
+
+@keyframes typing{
+  to{width:100%}
+}
+@keyframes blink{
+  50%{border-color:transparent}
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+
+.grid img{
+  width:100%;
+  border-radius:15px;
+  transition:0.4s;
+  cursor:pointer;
+}
+
+.grid img:hover{
+  transform:scale(1.1) rotate(2deg);
+  box-shadow:0 0 20px pink;
+}
+
+/* GOLD BUTTON */
+.gold-btn{
+  margin-top:30px;
+  padding:15px 35px;
+  font-size:1.2rem;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  background:linear-gradient(45deg,#ffd700,#ffae00);
+  color:black;
+  font-weight:bold;
+  transition:0.4s;
+  box-shadow:0 0 20px gold;
+}
+
+.gold-btn:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 40px gold;
+}
+
+/* HEARTS */
+.heart{
+  position:fixed;
+  width:15px;
+  height:15px;
+  background:red;
+  transform:rotate(45deg);
+  top:100%;
+  animation:float 6s linear infinite;
+}
+.heart::before,
+.heart::after{
+  content:'';
+  width:15px;
+  height:15px;
+  background:red;
+  border-radius:50%;
+  position:absolute;
+}
+.heart::before{top:-7px; left:0;}
+.heart::after{left:-7px; top:0;}
+
+@keyframes float{
+  to{
+    transform:translateY(-120vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+/* SECRET POPUP */
+.popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  background:rgba(0,0,0,0.8);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  transition:0.4s;
+  z-index:999;
+}
+
+.popup.show{
+  transform:translate(-50%,-50%) scale(1);
+}
+
+.popup button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:gold;
+  cursor:pointer;
+}
+
+/* FULLSCREEN IMAGE */
+.viewer{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:0.4s;
+}
+
+.viewer img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:20px;
+}
+
+.viewer.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="music/song.mp3">
+</audio>
+
+<!-- HEARTS -->
+<div id="hearts"></div>
+
+<!-- MAIN -->
+<div class="glass fade">
+  <h1 class="glow">Welcome My Sweetheart ❤️</h1>
+  <p class="typing">Your cute pictures… still my best memories forever 💖</p>
+</div>
+
+<!-- GALLERY -->
+<div class="glass fade">
+  <h2>Our Memories 📸</h2>
+  <div class="grid">
+    <img src="images/pic1.jpeg">
+    <img src="images/pic2.jpeg">
+    <img src="images/pic3.jpeg">
+    <img src="images/pic4.jpeg">
+    <img src="images/pic5.jpeg">
+  </div>
+</div>
+
+<!-- BUTTON -->
+<button class="gold-btn" onclick="goToLetter()">Read More 💌</button>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <h2>Hey ❤️</h2>
+  <p>You mean everything to me 💖</p>
+  <button onclick="closePopup()">Close</button>
+</div>
+
+<!-- IMAGE VIEW -->
+<div class="viewer" id="viewer">
+  <img id="fullImg">
+</div>
+
+<script>
+
+/* MUSIC */
+window.addEventListener("click",()=>{
+  document.getElementById("music").play();
+});
+
+/* HEARTS */
+const heartBox=document.getElementById("hearts");
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  heartBox.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},300);
+
+/* POPUP */
+setTimeout(()=>{
+  document.getElementById("popup").classList.add("show");
+},4000);
+
+function closePopup(){
+  document.getElementById("popup").classList.remove("show");
+}
+
+/* IMAGE CLICK */
+document.querySelectorAll(".grid img").forEach(img=>{
+  img.onclick=()=>{
+    document.getElementById("viewer").classList.add("show");
+    document.getElementById("fullImg").src=img.src;
+  }
+});
+
+document.getElementById("viewer").onclick=()=>{
+  document.getElementById("viewer").classList.remove("show");
+}
+
+/* PAGE TRANSITION */
+function goToLetter(){
+  document.body.style.opacity="0";
+  setTimeout(()=>{window.location.href="letter.html"},800);
+}
+
+</script>
+<audio id="music" loop>
+  <source src="music/music.mp3" type="audio/mp3">
+</audio>
+<script>
+const music = document.getElementById("music");
+
+/* SETTINGS */
+const START_TIME = 20; // start from 20 sec
+const DELAY = 1500; // delay before playing (ms)
+
+/* LOAD + RESUME */
+window.addEventListener("load", () => {
+  let savedTime = localStorage.getItem("musicTime");
+
+  if (savedTime) {
+    music.currentTime = savedTime;
+  } else {
+    music.currentTime = START_TIME;
+  }
+});
+
+/* PLAY WITH DELAY AFTER CLICK */
+window.addEventListener("click", () => {
+  setTimeout(() => {
+    music.play();
+
+    /* smooth volume fade */
+    music.volume = 0;
+    let v = 0;
+    let fade = setInterval(() => {
+      if (v < 1) {
+        v += 0.05;
+        music.volume = v;
+      } else {
+        clearInterval(fade);
+      }
+    }, 200);
+
+  }, DELAY);
+}, { once: true });
+
+/* SAVE CURRENT TIME */
+setInterval(() => {
+  localStorage.setItem("musicTime", music.currentTime);
+}, 1000);
+</script>
+</body>
+</html>

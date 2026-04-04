@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love Letter 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* GLOBAL */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:linear-gradient(270deg,#ff6ec4,#7873f5,#000);
+  background-size:400% 400%;
+  animation:bgMove 10s ease infinite;
+  color:white;
+  text-align:center;
+  overflow:hidden;
+}
+
+/* BG ANIMATION */
+@keyframes bgMove{
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
+}
+
+/* GLASS CARD */
+.glass{
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.1);
+  border-radius:25px;
+  padding:30px;
+  width:85%;
+  margin:80px auto;
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+  animation:fadeIn 1.5s ease forwards;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(40px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* TITLE */
+.glow{
+  font-size:2.5rem;
+  text-shadow:0 0 15px white,0 0 30px pink;
+}
+
+/* LETTER TEXT */
+#letter{
+  margin-top:20px;
+  font-size:1.2rem;
+  line-height:1.8;
+  min-height:200px;
+}
+
+/* HEARTS FLOAT */
+.heart{
+  position:fixed;
+  width:15px;
+  height:15px;
+  background:red;
+  transform:rotate(45deg);
+  top:100%;
+  animation:float 6s linear infinite;
+}
+.heart::before,
+.heart::after{
+  content:'';
+  width:15px;
+  height:15px;
+  background:red;
+  border-radius:50%;
+  position:absolute;
+}
+.heart::before{top:-7px;}
+.heart::after{left:-7px;}
+
+@keyframes float{
+  to{
+    transform:translateY(-120vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+/* GOLD BUTTON */
+.btn{
+  margin-top:25px;
+  padding:12px 30px;
+  border:none;
+  border-radius:40px;
+  font-size:1rem;
+  cursor:pointer;
+  background:linear-gradient(45deg,#ffd700,#ff9900);
+  color:black;
+  font-weight:bold;
+  transition:0.4s;
+}
+
+.btn:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 25px gold;
+}
+
+/* POPUP */
+.popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  background:rgba(0,0,0,0.8);
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  transition:0.4s;
+}
+
+.popup.show{
+  transform:translate(-50%,-50%) scale(1);
+}
+
+.popup button{
+  margin-top:10px;
+  background:gold;
+}
+
+/* PARTICLES */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="music/song.mp3">
+</audio>
+
+<!-- MAIN -->
+<div class="glass">
+  <h1 class="glow">For You ❤️</h1>
+  <p id="letter"></p>
+
+  <button class="btn" onclick="showPopup()">One More Thing 💌</button>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <h2>Hey ❤️</h2>
+  <p>Yrr tu literally bahut cute hai wht i thought more than it i litearlly cant understand wht i will do if u leave me 😭,plzz Always be with me yrr ❤️❤️</p>
+  <button onclick="closePopup()">Close</button>
+</div>
+<audio id="music" loop>
+  <source src="music/music.mp3" type="audio/mp3">
+</audio>
+<script>
+const music = document.getElementById("music");
+
+/* SETTINGS */
+const START_TIME = 20; // start from 20 sec
+const DELAY = 1500; // delay before playing (ms)
+
+/* LOAD + RESUME */
+window.addEventListener("load", () => {
+  let savedTime = localStorage.getItem("musicTime");
+
+  if (savedTime) {
+    music.currentTime = savedTime;
+  } else {
+    music.currentTime = START_TIME;
+  }
+});
+
+/* PLAY WITH DELAY AFTER CLICK */
+window.addEventListener("click", () => {
+  setTimeout(() => {
+    music.play();
+
+    /* smooth volume fade */
+    music.volume = 0;
+    let v = 0;
+    let fade = setInterval(() => {
+      if (v < 1) {
+        v += 0.05;
+        music.volume = v;
+      } else {
+        clearInterval(fade);
+      }
+    }, 200);
+
+  }, DELAY);
+}, { once: true });
+
+/* SAVE CURRENT TIME */
+setInterval(() => {
+  localStorage.setItem("musicTime", music.currentTime);
+}, 1000);
+</script>
+<script>
+
+/* MUSIC FIX */
+window.addEventListener("click",()=>{
+  document.getElementById("music").play();
+});
+
+/* TYPEWRITER */
+const text = `Yaar sach bolu na… ab toh words bhi kam padne lage hain 😭❤️
+Din bhar itni baatein karte hain hum, phir bhi dil nahi bharta… bas ek hi feeling aati rehti hai — I love you 🥺💖 aur tere liye kuch special karta rahu ✨
+
+Pata nahi tujhe meri aadat lagi hai ya nahi… par tu toh meri habit nahi, meri zaroorat ban gayi hai… I love you so much 😭💘
+Tu literally meri addiction ban gayi hai, bilkul cocaine jaisi… bina tere rehna ab possible hi nahi lagta 🥺❤️‍🔥
+
+Aaj 8 ghante se zyada baat ki humne… aur fir bhi lag raha hai aur baat karu, aur tujhe sunu… I love you yaar 😭💞
+Itna toh shayad pati-patni bhi nahi baat karte 😂❤️
+
+Aur tu… tu kya cheez hai yaar 😭✨
+Teri har baat, har expression, teri hasi, teri awaaz… sab kuch itna perfect kaise ho sakta hai? 🥺💖
+Teri cuteness toh alag hi level pe hai… woh chubby si smile, woh innocent si baatein… hayee sach mein dil le jaati hai 😭🥰
+Kabhi kabhi lagta hai bas tujhe dekhta rahu aur sunta rahu… I love you ❤️
+
+Hum dono itne comfortable ho gaye hain na… jaise tu meri ho, aur main tera hoon already ❤️
+Sab kuch itna natural lagta hai… jaise hum hamesha se ek dusre ke liye hi bane ho 💫
+
+Aur sun… tu nashedi hai? koi na 😭❤️
+Tu meri dost hai, meri apni hai 🥺💞
+Tu pagal hai? koi na 😂💖
+Phir bhi meri hi toh hai na tu 😭✨
+
+Sabse important — tu loyal hai… usme toh koi doubt hi nahi ❤️‍🔥
+Aur trust ki baat karu na… toh I trust you more than myself yaar 🥺💘
+Tu meri safe place hai, meri comfort hai… jaha sab kuch sahi lagta hai 💫
+
+Tu itni cute, itni pyaari, itni special… words hi nahi hai describe karne ke liye 😭💖
+Sach bolu toh tu sirf “perfect girl” nahi hai… tu meri duniya hai… I love you more than anything 🥺🌍❤️
+
+Maine kabhi socha bhi nahi tha ki meri life mein itni special koi aayegi…
+Par tu aayi… aur sab kuch change kar diya 💖
+
+Thank you meri life mein aane ke liye baby… I love you so so so much 😭💞✨
+Tu hai toh sab kuch hai ❤️‍🔥🥺`
+
+let i=0;
+
+function typeWriter(){
+  if(i<text.length){
+    document.getElementById("letter").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter,35);
+  }
+}
+typeWriter();
+
+/* HEARTS */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},300);
+
+/* POPUP */
+function showPopup(){
+  document.getElementById("popup").classList.add("show");
+}
+function closePopup(){
+  document.getElementById("popup").classList.remove("show");
+}
+
+/* PARTICLES */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+for(let i=0;i<70;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*3,
+    dx:Math.random()-0.5,
+    dy:Math.random()-0.5
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+
+    p.x+=p.dx;
+    p.y+=p.dy;
+
+    if(p.x<0||p.x>canvas.width) p.dx*=-1;
+    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+</script>
+
+</body>
+</html>
