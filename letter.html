@@ -23,7 +23,7 @@ body{
   animation:bgMove 10s ease infinite;
   color:white;
   text-align:center;
-  overflow:hidden;
+  overflow:auto;
 }
 
 /* BG ANIMATION */
@@ -64,7 +64,7 @@ body{
   min-height:200px;
 }
 
-/* HEARTS FLOAT */
+/* HEARTS */
 .heart{
   position:fixed;
   width:15px;
@@ -74,8 +74,7 @@ body{
   top:100%;
   animation:float 6s linear infinite;
 }
-.heart::before,
-.heart::after{
+.heart::before,.heart::after{
   content:'';
   width:15px;
   height:15px;
@@ -93,20 +92,18 @@ body{
   }
 }
 
-/* GOLD BUTTON */
+/* BUTTON */
 .btn{
   margin-top:25px;
   padding:12px 30px;
   border:none;
   border-radius:40px;
-  font-size:1rem;
-  cursor:pointer;
   background:linear-gradient(45deg,#ffd700,#ff9900);
   color:black;
   font-weight:bold;
+  cursor:pointer;
   transition:0.4s;
 }
-
 .btn:hover{
   transform:scale(1.1);
   box-shadow:0 0 25px gold;
@@ -121,17 +118,10 @@ body{
   background:rgba(0,0,0,0.8);
   padding:25px;
   border-radius:20px;
-  text-align:center;
   transition:0.4s;
 }
-
 .popup.show{
   transform:translate(-50%,-50%) scale(1);
-}
-
-.popup button{
-  margin-top:10px;
-  background:gold;
 }
 
 /* PARTICLES */
@@ -147,80 +137,45 @@ canvas{
 
 <body>
 
-<!-- PARTICLES -->
 <canvas id="particles"></canvas>
 
-<!-- MUSIC -->
-<audio id="music" loop>
-  <source src="music/song.mp3">
+<!-- 🎵 AUDIO (AUTO TRY + CLICK FIX) -->
+<audio id="music" autoplay loop muted preload="auto">
+  <source src="music/music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- MAIN -->
 <div class="glass">
   <h1 class="glow">For You ❤️</h1>
   <p id="letter"></p>
-
   <button class="btn" onclick="showPopup()">One More Thing 💌</button>
 </div>
 
-<!-- POPUP -->
 <div class="popup" id="popup">
   <h2>Hey ❤️</h2>
-  <p>Yrr tu literally bahut cute hai wht i thought more than it i litearlly cant understand wht i will do if u leave me 😭,plzz Always be with me yrr ❤️❤️</p>
+  <p>Yrr tu literally bahut cute hai 😭❤️ always be with me 💖</p>
   <button onclick="closePopup()">Close</button>
 </div>
-<audio id="music" loop>
-  <source src="music/music.mp3" type="audio/mp3">
-</audio>
+
 <script>
+
+/* 🎵 AUTO + CLICK COMBO FIX */
 const music = document.getElementById("music");
 
-/* SETTINGS */
-const START_TIME = 20; // start from 20 sec
-const DELAY = 1500; // delay before playing (ms)
-
-/* LOAD + RESUME */
+/* try autoplay */
 window.addEventListener("load", () => {
-  let savedTime = localStorage.getItem("musicTime");
-
-  if (savedTime) {
-    music.currentTime = savedTime;
-  } else {
-    music.currentTime = START_TIME;
-  }
+  music.play().then(() => {
+    setTimeout(() => {
+      music.muted = false;
+    }, 1000);
+  }).catch(()=>{});
 });
 
-/* PLAY WITH DELAY AFTER CLICK */
+/* fallback click */
 window.addEventListener("click", () => {
-  setTimeout(() => {
-    music.play();
-
-    /* smooth volume fade */
-    music.volume = 0;
-    let v = 0;
-    let fade = setInterval(() => {
-      if (v < 1) {
-        v += 0.05;
-        music.volume = v;
-      } else {
-        clearInterval(fade);
-      }
-    }, 200);
-
-  }, DELAY);
+  music.muted = false;
+  music.play();
 }, { once: true });
 
-/* SAVE CURRENT TIME */
-setInterval(() => {
-  localStorage.setItem("musicTime", music.currentTime);
-}, 1000);
-</script>
-<script>
-
-/* MUSIC FIX */
-window.addEventListener("click",()=>{
-  document.getElementById("music").play();
-});
 
 /* TYPEWRITER */
 const text = `Yaar sach bolu na… ab toh words bhi kam padne lage hain 😭❤️
@@ -256,10 +211,9 @@ Maine kabhi socha bhi nahi tha ki meri life mein itni special koi aayegi…
 Par tu aayi… aur sab kuch change kar diya 💖
 
 Thank you meri life mein aane ke liye baby… I love you so so so much 😭💞✨
-Tu hai toh sab kuch hai ❤️‍🔥🥺`
+Tu hai toh sab kuch hai ❤️‍🔥🥺`;
 
 let i=0;
-
 function typeWriter(){
   if(i<text.length){
     document.getElementById("letter").innerHTML += text.charAt(i);
